@@ -33,7 +33,7 @@ class main_controller
 	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\language\language */
+	/** @var language */
 	protected $language;
 
 	/** @var auth */

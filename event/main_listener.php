@@ -106,7 +106,7 @@ class main_listener implements EventSubscriberInterface
 
 	public function add_permissions($event):void
 	{
-	 	$permissions = $event['permissions'];
+		$permissions = $event['permissions'];
 		$permissions['u_dmzx_pushmessage'] = ['lang' => 'ACL_U_DMZX_PUSHMESSAGE', 'cat' => 'misc'];
 		$event['permissions'] = $permissions;
 	}

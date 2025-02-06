@@ -21,8 +21,6 @@ use phpbb\db\driver\driver_interface;
 use phpbb\user;
 use phpbb\log\log_interface;
 use phpbb\pagination;
-use phpbb\exception\http_exception;
-use Symfony\Component\HttpFoundation\Response;
 
 class acp_controller
 {
@@ -181,13 +179,16 @@ class acp_controller
 		$search_message = $this->request->variable('search_message', '', true);
 
 		$conditions = [];
-		if ($search_sender) {
+		if ($search_sender)
+		{
 			$conditions[] = "LOWER(u1.username_clean) LIKE '%" . $this->db->sql_escape(utf8_clean_string($search_sender)) . "%'";
 		}
-		if ($search_receiver) {
+		if ($search_receiver)
+		{
 			$conditions[] = "LOWER(u2.username_clean) LIKE '%" . $this->db->sql_escape(utf8_clean_string($search_receiver)) . "%'";
 		}
-		if ($search_message) {
+		if ($search_message)
+		{
 			$conditions[] = "LOWER(p.pushmessage_comment) LIKE '%" . $this->db->sql_escape(utf8_clean_string($search_message)) . "%'";
 		}
 
@@ -201,7 +202,8 @@ class acp_controller
 		$total_logs = $this->db->sql_fetchfield('total_logs');
 		$this->db->sql_freeresult($result);
 
-		if (!empty($conditions)) {
+		if (!empty($conditions))
+		{
 			// If search is active, disable pagination
 			$logs_per_page = $total_logs > 0 ? $total_logs : 1; // Ensure logs_per_page is not zero
 		}
