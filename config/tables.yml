@@ -1,0 +1,2 @@
+parameters:
+  dmzx.pushmessage.table.pushmessage: '%core.table_prefix%pushmessage_log'

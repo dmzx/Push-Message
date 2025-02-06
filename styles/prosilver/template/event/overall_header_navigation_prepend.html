@@ -1,0 +1,14 @@
+{% if PUSHMESSAGE_ALLOW_USE and S_PUSHMESSAGE_ENABLE and not S_PUSHMESSAGE_POPUP %}
+<li data-last-responsive="true">
+	<a href="{{ U_PUSHMESSAGE_PAGE }}" title="{{ lang('PUSHMESSAGE_PAGE') }}" role="menuitem">
+		<i class="icon fa fa-user fa-fw" aria-hidden="true"></i><span>{{ lang('PUSHMESSAGE_PAGE') }}</span>
+	</a>
+</li>
+{% endif %}
+{% if PUSHMESSAGE_ALLOW_USE and S_PUSHMESSAGE_ENABLE and S_PUSHMESSAGE_POPUP %}
+<li data-last-responsive="true">
+	<a href="{{ U_PUSHMESSAGE_PAGE }}" title="{{ lang('PUSHMESSAGE_PAGE') }}" role="menuitem" onclick="popup_push_message_center('{{ U_PUSHMESSAGE_PAGE }}'); return false;">
+		<i class="icon fa fa-user fa-fw" aria-hidden="true"></i><span>{{ lang('PUSHMESSAGE_PAGE') }}</span>
+	</a>
+</li>
+{% endif %}

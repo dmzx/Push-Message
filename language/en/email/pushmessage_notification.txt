@@ -1,0 +1,14 @@
+Subject: Push Message - {{ SITENAME }}
+
+Hello {{ USERNAME }},
+
+{{ PUSHMESSAGES_NOTIFY_MSG }} {{ USERNAME_WHO }}
+
+{{ SITENAME }}
+
+----------------------------
+
+If you no longer wish to receive the Push message email, click on the following link:
+{{ U_NOTIFICATION_SETTINGS }}
+
+{{ EMAIL_SIG }}

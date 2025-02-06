@@ -1,0 +1,46 @@
+{
+	"name": "dmzx/pushmessage",
+	"type": "phpbb-extension",
+	"description": "Push Message, message short messages.",
+	"homepage": "https://www.dmzx-web.net/",
+	"version": "1.0.1",
+	"time": "2025-02-05",
+	"keywords": [
+		"phpbb",
+		"extension",
+		"pushmessage"
+	],
+	"license": "GPL-2.0-only",
+	"authors": [
+		{
+			"name": "dmzx",
+			"email": "info@dmzx-web.net",
+			"homepage": "https://www.dmzx-web.net",
+			"role": "Extension Developer"
+		},
+		{
+			"name": "martin",
+			"homepage": "https://www.martins-play-ground.uk",
+			"role": "Extension Developer"
+		}
+	],
+	"require": {
+		"php": ">=7.1.3",
+		"composer/installers": "~1.0"
+	},
+	"require-dev": {
+		"phpbb/epv": "dev-master"
+	},
+	"extra": {
+		"display-name": "Push Message",
+		"soft-require": {
+			"phpbb/phpbb": ">=3.3.0,<4.0.0@dev"
+		},
+		"version-check": {
+			"host": "www.dmzx-web.net",
+			"directory": "/versions",
+			"filename": "pushmessage_version.json",
+			"ssl": true
+		}
+	}
+}

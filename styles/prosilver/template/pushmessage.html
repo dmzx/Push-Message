@@ -1,0 +1,86 @@
+{% if PUSHMESSAGE_ALLOW_USE and S_PUSHMESSAGE_ENABLE %}
+{% if not S_PUSHMESSAGE_POPUP %}{% include 'overall_header.html' %}{% else %}{% include 'simple_header.html' %}{% endif %}
+
+{% INCLUDECSS '@dmzx_pushmessage/pushmessage.css' %}
+
+<form action="{{ U_ACTION }}" method="post" class="pushmessage-form">
+	<fieldset>
+		<legend>{{ lang('PUSHMESSAGE_MESSAGE_SEND') }}</legend>
+		<dl class="pushmessage-fieldset">
+			<dt><label for="username_id">{{ lang('PUSHMESSAGE_USER_SELECTION') }}{{ lang('COLON') }}</label><br><span>{{ lang('PUSHMESSAGE_USER_SELECTION_EXPLAIN') }}</span></dt>
+			<dd>
+				<input type="text" id="username_id" name="username_id" required aria-required="true" class="pushmessage-input" oninput="fetchUsernames(this.value)" autocomplete="off" />
+				<div id="username_suggestions" class="pushmessage-suggestions"></div>
+			</dd>
+		</dl>
+		<dl class="pushmessage-fieldset">
+			<dt><label for="message">{{ lang('PUSHMESSAGE_MESSAGE') }}{{ lang('COLON') }}</label></dt>
+			<dd class="pushmessage-input-wrapper">
+				<textarea id="message" name="message" rows="5" cols="40" required aria-required="true" class="pushmessage-textarea"></textarea>
+				<button type="button" onclick="resetField('message')" class="pushmessage-reset-button">{{ lang('RESET') }}</button>
+			</dd>
+		</dl>
+		<dl class="pushmessage-fieldset">
+			<dt>&nbsp;</dt>
+			<dd><input type="submit" name="submit" value="{{ lang('PUSHMESSAGE_SUBMIT') }}" class="pushmessage-submit-button button1" /></dd>
+		</dl>
+	</fieldset>
+	{{ S_FORM_TOKEN }}
+	<input type="hidden" id="current_user_id" value="{{ USER_ID }}" />
+</form>
+
+{% if not S_PUSHMESSAGE_POPUP %}{% include 'overall_footer.html' %}{% else %}{% include 'simple_footer.html' %}{% endif %}
+{% endif %}
+
+<script>
+	function resetField(fieldId) {
+		document.getElementById(fieldId).value = '';
+		toggleUserFields();
+	}
+
+	function toggleUserFields() {
+		const username = document.getElementById('username_id').value;
+		document.getElementById('username_id').disabled = userId || username;
+	}
+
+	function fetchUsernames(inputValue) {
+		if (inputValue.length < 2) {
+			document.getElementById('username_suggestions').innerHTML = '';
+			return;
+		}
+
+		const currentUserId = document.getElementById('current_user_id').value;
+
+		// Use AJAX to fetch usernames from the server
+		$.getJSON('{{ U_PUSHMESSAGE_USER }}?username=' + inputValue, function(data) {
+			updateSuggestions(data, currentUserId);
+		});
+	}
+
+	function updateSuggestions(suggestions, currentUserId) {
+		const suggestionsDiv = document.getElementById("username_suggestions");
+		suggestionsDiv.innerHTML = ""; // Clear previous suggestions
+		if (suggestions.length === 0) {
+			return;
+		}
+
+		suggestions.forEach(user => {
+			if (user.user_id != currentUserId) {
+				const suggestionElement = document.createElement("div");
+				suggestionElement.textContent = user.username;
+				suggestionElement.classList.add("suggestion-item");
+				// Add a click event listener to populate the input field
+				suggestionElement.addEventListener("click", function() {
+					document.getElementById("username_id").value = user.username;
+					suggestionsDiv.innerHTML = ""; // Clear suggestions after selection
+					toggleUserFields();
+				});
+				suggestionsDiv.appendChild(suggestionElement);
+			}
+		});
+	}
+
+	document.addEventListener('DOMContentLoaded', function() {
+		toggleUserFields();
+	});
+</script>

@@ -1,0 +1,106 @@
+.pushmessage-form {
+    width: 100%;
+    max-width: 88%;
+    margin: 0 auto;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+fieldset {
+    border: none;
+    padding: 0;
+}
+.pushmessage-fieldset {
+    margin-bottom: 1em;
+}
+legend {
+    font-size: 1.2em;
+    margin-bottom: 0.5em;
+}
+dt {
+    margin-bottom: 0.5em;
+}
+dd {
+    margin: 0;
+    padding: 0;
+}
+.pushmessage-input-wrapper {
+    display: flex;
+    align-items: center;
+}
+.pushmessage-input,
+.pushmessage-textarea,
+.pushmessage-select {
+    width: calc(100% - 100px);
+    font-size: 14px;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+.pushmessage-submit-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.7em 1.5em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.pushmessage-submit-button:hover {
+    background-color: #45a049;
+}
+.pushmessage-reset-button {
+    background-color: #f44336;
+    color: white;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 0.5em;
+}
+.pushmessage-reset-button:hover {
+    background-color: #e53935;
+}
+
+@media (max-width: 600px) {
+    .pushmessage-form {
+        padding: 0.5em;
+    }
+    .pushmessage-input-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .pushmessage-input,
+    .pushmessage-textarea,
+    .pushmessage-select {
+        width: 100%;
+        margin-bottom: 0.5em;
+    }
+    .pushmessage-submit-button, .pushmessage-reset-button {
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 0.5em;
+    }
+}
+
+.pushmessage-suggestions {
+    max-height: 150px;
+    overflow-y: auto;
+    background-color: #fff;
+    position: absolute;
+    z-index: 1000;
+    width: 20%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #ffffff;
+}

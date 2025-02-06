@@ -1,0 +1,7 @@
+dmzx_pushmessage_controller:
+    path: '/pushmessage'
+    defaults: { _controller: 'dmzx.pushmessage.controller.main:handle' }
+dmzx_pushmessage_user_controller:
+    path: '/pushmessage/page_user'
+    methods: ['GET']
+    defaults: { _controller: 'dmzx.pushmessage.controller.main:page_user' }

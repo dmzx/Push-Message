@@ -1,0 +1,3 @@
+{% if PUSHMESSAGE_FOOTER_VIEW and S_USER_LOGGED_IN %}
+	<div><i class="fa fa-user" aria-hidden="true"></i> {{ PUSHMESSAGE_DISPLAY_NAME }} <span title="{{ lang('PUSHMESSAGE_VERSION') ~ lang('COLON') }} {{ PUSHMESSAGE_VERSION }}">&copy;</span> {{ lang('POST_BY_AUTHOR') }} {{ PUSHMESSAGE_AUTHOR_HOMEPAGES }}</div>
+{% endif %}

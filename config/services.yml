@@ -1,0 +1,62 @@
+imports:
+  - { resource: 'tables.yml' }
+services:
+    dmzx.pushmessage.controller.main:
+        class: dmzx\pushmessage\controller\main_controller
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@template'
+            - '@language'
+            - '@auth'
+            - '@request'
+            - '@notification_manager'
+            - '@dmzx.pushmessage.functions'
+            - '@dbal.conn'
+            - '@user'
+            - '%dmzx.pushmessage.table.pushmessage%'
+
+    dmzx.pushmessage.listener:
+        class: dmzx\pushmessage\event\main_listener
+        arguments:
+            - '@language'
+            - '@controller.helper'
+            - '@template'
+            - '@auth'
+            - '@config'
+            - '%core.php_ext%'
+        tags:
+            - { name: event.listener }
+
+    dmzx.pushmessage.functions:
+        class: 'dmzx\pushmessage\core\functions'
+        arguments:
+            - '@template'
+            - '@ext.manager'
+            - '@config'
+
+    dmzx.pushmessage.admin.controller:
+        class: dmzx\pushmessage\controller\acp_controller
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@template'
+            - '@language'
+            - '@auth'
+            - '@request'
+            - '@dmzx.pushmessage.functions'
+            - '@dbal.conn'
+            - '@user'
+            - '@log'
+            - '@pagination'
+            - '%dmzx.pushmessage.table.pushmessage%'
+
+    dmzx.pushmessage.notification.type.pushmessage:
+        class: 'dmzx\pushmessage\notification\pushmessage'
+        shared: false # service MUST not be shared for this to work!
+        parent: notification.type.base
+        calls:
+          - [ set_user_loader, [ '@user_loader' ] ]
+          - [ set_helper, [ '@controller.helper' ] ]
+        tags:
+          - { name: notification.type }

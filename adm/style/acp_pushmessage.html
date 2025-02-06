@@ -1,0 +1,113 @@
+{% INCLUDE 'overall_header.html' %}
+
+{% INCLUDECSS '@dmzx_pushmessage/css/acp_pushmessage.css' %}
+
+<div class="pushmessage_header">
+	<h1>
+		<i class="fa fa-user" aria-hidden="true"></i> {{ PUSHMESSAGE_DISPLAY_NAME }}
+	</h1>
+	<span class="pushmessage_copyright">
+		<span title="{{ lang('PUSHMESSAGE_VERSION') ~ lang('COLON') }} {{ PUSHMESSAGE_VERSION }}">&copy;</span>
+		{{ lang('POST_BY_AUTHOR') }} {{ PUSHMESSAGE_AUTHOR_HOMEPAGES }}
+	</span>
+</div>
+
+<p><img src="https://img.shields.io/badge/{{ lang('PUSHMESSAGE_VERSION') }}-{{ PUSHMESSAGE_VERSION }}-green.svg?style=plastic" /></p>
+
+<form id="acp_pushmessage_form_key" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+		<legend>{{ lang('ACP_PUSHMESSAGE_CONFIG') }}</legend>
+		<dl>
+			<dt><label for="pushmessage_enable">{{ lang('ACP_PUSHMESSAGE_ENABLE') }}{{ lang('COLON') }}</label><br>
+			<span>{{ lang('ACP_PUSHMESSAGE_ENABLE_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" name="pushmessage_enable" value="1"{% if PUSHMESSAGE_ENABLE %} id="pushmessage_enable" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+			<label><input type="radio" class="radio" name="pushmessage_enable" value="0"{% if not PUSHMESSAGE_ENABLE %} id="pushmessage_enable" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="pushmessage_popup">{{ lang('ACP_PUSHMESSAGE_POPUP') }}{{ lang('COLON') }}</label><br>
+			<span>{{ lang('ACP_PUSHMESSAGE_POPUP_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" name="pushmessage_popup" value="1"{% if PUSHMESSAGE_POPUP %} id="pushmessage_popup" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+			<label><input type="radio" class="radio" name="pushmessage_popup" value="0"{% if not PUSHMESSAGE_POPUP %} id="pushmessage_popup" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="pushmessage_pagination">{{ lang('ACP_PUSHMESSAGE_PAGINATION') }}{{ lang('COLON') }}</label><br>
+			<span>{{ lang('ACP_PUSHMESSAGE_PAGINATION_EXPLAIN') }}</span></dt>
+			<dd>
+				<input type="number" name="pushmessage_pagination" id="pushmessage_pagination" size="4" maxlength="4" min="1" max="50" value="{{ PUSHMESSAGE_PAGINATION }}" />
+			</dd>
+		</dl>
+		<p class="submit-buttons">
+			<input class="pushmessage-button" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
+			{{ S_FORM_TOKEN }}
+		</p>
+	</fieldset>
+</form>
+{% if loops.row|length %}
+{% if loops.pagination|length or PUSHMESSAGE_TOTAL_MESSAGES %}
+<div class="pagination">
+	{{ PUSHMESSAGE_TOTAL_MESSAGES }}
+	{% if loops.pagination|length %}
+		{% INCLUDE 'pagination.html' %}
+	{% else %}
+		&bull; {{ PAGE_NUMBER }}
+	{% endif %}
+</div>
+{% endif %}
+<form id="acp_pushmessage_form_key" method="post" action="{{ U_ACTION }}">
+	<div class="pushmessage-title">{{ lang('ACP_PUSHMESSAGE_TABLE_TITLE') }}</div>
+
+	<!-- Search Inputs -->
+	<div class="pushmessage-search">
+		<input type="text" name="search_sender" placeholder="{{ lang('ACP_PUSHMESSAGE_SEARCH_SENDER') }}" value="{{ SEARCH_SENDER }}" />
+		<input type="text" name="search_receiver" placeholder="{{ lang('ACP_PUSHMESSAGE_SEARCH_RECEIVER') }}" value="{{ SEARCH_RECEIVER }}" />
+		<input type="text" name="search_message" placeholder="{{ lang('ACP_PUSHMESSAGE_SEARCH_MESSAGE') }}" value="{{ SEARCH_MESSAGE }}" />
+		<input class="pushmessage-button" type="submit" name="search_submit" value="{{ lang('SEARCH') }}" />
+		<a class="pushmessage-button" href="{{ U_ACTION }}">{{ lang('BACK') }}</a>
+	</div>
+
+	<div class="pushmessage-container">
+		<div class="pushmessage-header">
+			<div class="pushmessage-column pushmessage-sender">{{ lang('ACP_PUSHMESSAGE_SENDER_USERNAME') }}</div>
+			<div class="pushmessage-column pushmessage-receiver">{{ lang('ACP_PUSHMESSAGE_RECEIVER_USERNAME') }}</div>
+			<div class="pushmessage-column pushmessage-message">{{ lang('ACP_PUSHMESSAGE_MESSAGE') }}</div>
+			<div class="pushmessage-column pushmessage-date">{{ lang('ACP_PUSHMESSAGE_DATE') }}</div>
+			<div class="pushmessage-column pushmessage-action">{{ lang('ACP_PUSHMESSAGE_ACTION') }}</div>
+		</div>
+		{% for row in loops.row %}
+		<div class="pushmessage-row">
+			<div class="pushmessage-column pushmessage-sender">{{ row.SENDER_USERNAME }}</div>
+			<div class="pushmessage-column pushmessage-receiver">{{ row.RECEIVER_USERNAME }}</div>
+			<div class="pushmessage-column pushmessage-message">{{ row.MESSAGE }}</div>
+			<div class="pushmessage-column pushmessage-date">{{ row.DATE }}</div>
+			<div class="pushmessage-column pushmessage-action"><a class="pushmessage-delete-link" href="{{ row.U_DELETE }}">{{ lang('DELETE') }}</a></div>
+		</div>
+		{% endfor %}
+	</div>
+</form>
+<form id="acp_pushmessage_form_key" method="post" action="{{ U_ACTION }}" onsubmit="return confirmDelete();">
+	<fieldset class="pushmessage-fieldset">
+	<legend>{{ lang('ACP_PUSHMESSAGE_MESSAGE_UPC_STAY') }}</legend>
+		<div class="pushmessage-confirmation">
+			<input type="checkbox" id="confirm_delete" name="confirm_delete" />
+			<label for="confirm_delete">{{ lang('ACP_PUSHMESSAGE_DELETE_LABEL') }}</label>
+		</div>
+		<input class="pushmessage-button" type="submit" name="delete_all" value="{{ lang('DELETE_ALL') }}" />
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+<script>
+function confirmDelete() {
+	var confirmCheckbox = document.getElementById('confirm_delete');
+	if (!confirmCheckbox.checked) {
+		alert('{{ lang('ACP_PUSHMESSAGE_CONFIRM_DELETE_PROMPT') }}');
+		return false;
+	}
+	return true;
+}
+</script>
+{% else %}
+<p class="error"><strong>{{ lang('ACP_PUSHMESSAGE_NO_TITLE') }}</strong></p>
+{% endif %}
+
+{% INCLUDE 'overall_footer.html' %}
