@@ -156,6 +156,11 @@ class main_controller
 
 				$current_time = time();
 
+				$uid = $bitfield = $options = '';
+				$allow_bbcode = $allow_urls = $allow_smilies = true;
+
+				generate_text_for_storage($message, $uid, $bitfield, $options, $allow_bbcode, $allow_urls, $allow_smilies);
+
 				// Add to pushmessage_log
 				$sql = 'INSERT INTO ' . $this->pushmessage_log . ' ' . $this->db->sql_build_array('INSERT', [
 					'pushmessage_send'		=> (int) $this->user->data['user_id'],
