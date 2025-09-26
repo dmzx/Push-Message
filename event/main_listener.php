@@ -16,6 +16,9 @@ use phpbb\controller\helper;
 use phpbb\template\template;
 use phpbb\auth\auth;
 use phpbb\config\config;
+use phpbb\user;
+use phpbb\notification\manager;
+use Symfony\Component\DependencyInjection\Container;
 
 class main_listener implements EventSubscriberInterface
 {
@@ -34,6 +37,15 @@ class main_listener implements EventSubscriberInterface
 	/** @var config */
 	protected $config;
 
+	/** @var user */
+	protected $user;
+
+	/** @var manager */
+	protected $notification_manager;
+
+	/** @var Container */
+	protected $phpbb_container;
+
 	/** @var string phpEx */
 	protected $php_ext;
 
@@ -45,6 +57,9 @@ class main_listener implements EventSubscriberInterface
 	 * @param template		$template
 	 * @param auth			$auth
 	 * @param config		$config
+	 * @param user 			$user
+	 * @param manager 		$notification_manager
+	 * @param Container 	$phpbb_container
 	 * @param string		$php_ext
 	 */
 	public function __construct(
@@ -53,15 +68,21 @@ class main_listener implements EventSubscriberInterface
 		template $template,
 		auth $auth,
 		config $config,
+		user $user,
+		manager $notification_manager,
+		Container $phpbb_container,
 		$php_ext
 	)
 	{
-		$this->language = $language;
-		$this->helper	= $helper;
-		$this->template = $template;
-		$this->auth 	= $auth;
-		$this->config	= $config;
-		$this->php_ext	= $php_ext;
+		$this->language 			= $language;
+		$this->helper				= $helper;
+		$this->template 			= $template;
+		$this->auth 				= $auth;
+		$this->config				= $config;
+		$this->user 				= $user;
+		$this->notification_manager = $notification_manager;
+		$this->phpbb_container 		= $phpbb_container;
+		$this->php_ext				= $php_ext;
 	}
 
 	public static function getSubscribedEvents(): array
@@ -71,6 +92,7 @@ class main_listener implements EventSubscriberInterface
 			'core.page_header'							=> 'add_page_header_link',
 			'core.viewonline_overwrite_location'		=> 'viewonline_page',
 			'core.permissions'							=> 'add_permissions',
+			'dmzx.mchat.action_add_after'				=> 'action_add_after',
 		];
 	}
 
@@ -109,5 +131,47 @@ class main_listener implements EventSubscriberInterface
 		$permissions = $event['permissions'];
 		$permissions['u_dmzx_pushmessage'] = ['lang' => 'ACL_U_DMZX_PUSHMESSAGE', 'cat' => 'misc'];
 		$event['permissions'] = $permissions;
+	}
+
+	public function action_add_after($event):void
+	{
+		if ($this->phpbb_container->has('dmzx.mchat.settings') && $this->config['pushmessage_mention_mchat'])
+		{
+			$message = $event['message'];
+
+			if (strpos($message, '@') !== false)
+			{
+				// Exclude quotes from the message
+				$message_without_quotes = preg_replace('/\[quote.*?\[\/quote\]/s', '', $message);
+
+				// Use regular expression to extract the value of 'u' from the message without quotes
+				if (preg_match('/u=(\d+)/', $message_without_quotes, $matches))
+				{
+					$receiver_id = $matches[1];
+
+					$message_data = $event['message_data'];
+
+					// Increase our notification sent counter
+					$this->config->increment('pushmessage_notification_id', 1);
+
+					// Store the notification data we will use in an array
+					$data = [
+						'pushmessages_notify_id'	=> (int) $this->config['pushmessage_notification_id'],
+						'pushmessages_notify_msg'	=> sprintf($this->user->lang['PUSHMESSAGE_TRANSFER_MCHAT'], $this->config['pushmessages_name']),
+						'sender'					=> (int) $message_data['user_id'],
+						'receiver'					=> (int) $receiver_id,
+						'mode'						=> 'message',
+					];
+
+					 // Create the notification
+					$this->createNotification($data);
+				}
+			}
+		}
+	}
+
+	protected function createNotification(array $data)
+	{
+		$this->notification_manager->add_notifications('dmzx.pushmessage.notification.type.pushmessage', $data);
 	}
 }

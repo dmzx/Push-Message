@@ -24,6 +24,9 @@ services:
             - '@template'
             - '@auth'
             - '@config'
+            - '@user'
+            - '@notification_manager'
+            - '@service_container'
             - '%core.php_ext%'
         tags:
             - { name: event.listener }
@@ -49,6 +52,7 @@ services:
             - '@user'
             - '@log'
             - '@pagination'
+            - '@service_container'
             - '%dmzx.pushmessage.table.pushmessage%'
 
     dmzx.pushmessage.notification.type.pushmessage:

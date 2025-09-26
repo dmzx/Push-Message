@@ -21,6 +21,7 @@ use phpbb\db\driver\driver_interface;
 use phpbb\user;
 use phpbb\log\log_interface;
 use phpbb\pagination;
+use Symfony\Component\DependencyInjection\Container;
 
 class acp_controller
 {
@@ -57,6 +58,9 @@ class acp_controller
 	/** @var pagination */
 	protected $pagination;
 
+	/** @var Container */
+	protected $phpbb_container;
+
 	/** @var string */
 	protected $pushmessage_log;
 
@@ -76,6 +80,7 @@ class acp_controller
 	 * @param driver_interface 		$db
 	 * @param user 					$user
 	 * @param log_interface			$log
+	 * @param Container 			$phpbb_container
 	 * @param string 				$pushmessage_log
 	 */
 	public function __construct(
@@ -90,6 +95,7 @@ class acp_controller
 		user $user,
 		log_interface $log,
 		pagination $pagination,
+		Container $phpbb_container,
 		$pushmessage_log
 	)
 	{
@@ -104,6 +110,7 @@ class acp_controller
 		$this->user 				= $user;
 		$this->log 					= $log;
 		$this->pagination 			= $pagination;
+		$this->phpbb_container 		= $phpbb_container;
 		$this->pushmessage_log 		= $pushmessage_log;
 	}
 
@@ -152,11 +159,19 @@ class acp_controller
 
 		$this->functions->assign_authors();
 
+		if ($this->phpbb_container->has('dmzx.mchat.settings'))
+		{
+			$this->template->assign_var('S_PUSHMESSAGE_ENABLE_MCHAT', true);
+		}
+
 		$this->template->assign_vars([
 			'PUSHMESSAGE_VERSION'				=> $this->config['pushmessage_version'],
 			'PUSHMESSAGE_ENABLE'				=> $this->config['pushmessage_enable'],
 			'PUSHMESSAGE_POPUP'					=> $this->config['pushmessage_popup'],
 			'PUSHMESSAGE_PAGINATION'			=> $this->config['pushmessage_pagination'],
+			'PUSHMESSAGE_MENTION_MCHAT'			=> $this->config['pushmessage_mention_mchat'],
+			'PUSHMESSAGE_ENABLE_LAST_MESSAGE'	=> $this->config['pushmessage_enable_last_message'],
+			'PUSHMESSAGE_COUNT_LAST_MESSAGE'	=> $this->config['pushmessage_count_last_message'],
 			'U_ACTION'						 	=> $this->u_action,
 		]);
 
@@ -245,7 +260,7 @@ class acp_controller
 
 		$this->template->assign_vars([
 			'PUSHMESSAGE_TOTAL_MESSAGES'		=> $this->language->lang('ACP_PUSHMESSAGE_MESSAGES', (int) $total_logs),
-			'SEARCH_SENDER'					=> $search_sender,
+			'SEARCH_SENDER'						=> $search_sender,
 			'SEARCH_RECEIVER'					=> $search_receiver,
 			'SEARCH_MESSAGE'					=> $search_message,
 		]);
@@ -285,6 +300,9 @@ class acp_controller
 		$this->config->set('pushmessage_enable', $this->request->variable('pushmessage_enable', 0));
 		$this->config->set('pushmessage_popup', $this->request->variable('pushmessage_popup', 0));
 		$this->config->set('pushmessage_pagination', $this->request->variable('pushmessage_pagination', 0));
+		$this->config->set('pushmessage_mention_mchat', $this->request->variable('pushmessage_mention_mchat', 0));
+		$this->config->set('pushmessage_enable_last_message', $this->request->variable('pushmessage_enable_last_message', 0));
+		$this->config->set('pushmessage_count_last_message', $this->request->variable('pushmessage_count_last_message', 0));
 	}
 
 	/**

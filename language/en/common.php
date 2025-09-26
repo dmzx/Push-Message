@@ -43,4 +43,5 @@ $lang = array_merge($lang, [
 	'PUSHMESSAGE_SELECT_USER_ERROR' 		=> 'Please select a user.',
 	'PUSHMESSAGE_NOT_ENABELD' 				=> 'Push Message not enabled',
 	'PUSHMESSAGE_VERSION' 					=> 'Version',
+	'PUSHMESSAGE_TRANSFER_MCHAT' 			=> 'you are mentioned in mChat by %s',
 ]);

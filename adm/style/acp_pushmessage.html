@@ -20,14 +20,18 @@
 		<dl>
 			<dt><label for="pushmessage_enable">{{ lang('ACP_PUSHMESSAGE_ENABLE') }}{{ lang('COLON') }}</label><br>
 			<span>{{ lang('ACP_PUSHMESSAGE_ENABLE_EXPLAIN') }}</span></dt>
-			<dd><label><input type="radio" class="radio" name="pushmessage_enable" value="1"{% if PUSHMESSAGE_ENABLE %} id="pushmessage_enable" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
-			<label><input type="radio" class="radio" name="pushmessage_enable" value="0"{% if not PUSHMESSAGE_ENABLE %} id="pushmessage_enable" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
+			<dd>
+				<label><input type="radio" class="radio" name="pushmessage_enable" value="1"{% if PUSHMESSAGE_ENABLE %} id="pushmessage_enable" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="pushmessage_enable" value="0"{% if not PUSHMESSAGE_ENABLE %} id="pushmessage_enable" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
+			</dd>
 		</dl>
 		<dl>
 			<dt><label for="pushmessage_popup">{{ lang('ACP_PUSHMESSAGE_POPUP') }}{{ lang('COLON') }}</label><br>
 			<span>{{ lang('ACP_PUSHMESSAGE_POPUP_EXPLAIN') }}</span></dt>
-			<dd><label><input type="radio" class="radio" name="pushmessage_popup" value="1"{% if PUSHMESSAGE_POPUP %} id="pushmessage_popup" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
-			<label><input type="radio" class="radio" name="pushmessage_popup" value="0"{% if not PUSHMESSAGE_POPUP %} id="pushmessage_popup" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
+			<dd>
+				<label><input type="radio" class="radio" name="pushmessage_popup" value="1"{% if PUSHMESSAGE_POPUP %} id="pushmessage_popup" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="pushmessage_popup" value="0"{% if not PUSHMESSAGE_POPUP %} id="pushmessage_popup" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
+			</dd>
 		</dl>
 		<dl>
 			<dt><label for="pushmessage_pagination">{{ lang('ACP_PUSHMESSAGE_PAGINATION') }}{{ lang('COLON') }}</label><br>
@@ -36,6 +40,31 @@
 				<input type="number" name="pushmessage_pagination" id="pushmessage_pagination" size="4" maxlength="4" min="1" max="50" value="{{ PUSHMESSAGE_PAGINATION }}" />
 			</dd>
 		</dl>
+		<dl>
+			<dt><label for="pushmessage_enable_last_message">{{ lang('ACP_PUSHMESSAGE_ENABLE_LAST_MESSAGE') }}{{ lang('COLON') }}</label><br>
+				<span>{{ lang('ACP_PUSHMESSAGE_ENABLE_LAST_MESSAGE_EXPLAIN') }}</span></dt>
+			<dd>
+				<label><input type="radio" class="radio" name="pushmessage_enable_last_message" value="1"{% if PUSHMESSAGE_ENABLE_LAST_MESSAGE %} id="pushmessage_enable_last_message" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="pushmessage_enable_last_message" value="0"{% if not PUSHMESSAGE_ENABLE_LAST_MESSAGE %} id="pushmessage_enable_last_message" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="pushmessage_count_last_message">{{ lang('ACP_PUSHMESSAGE_COUNT_LAST_MESSAGE') }}{{ lang('COLON') }}</label><br>
+			<span>{{ lang('ACP_PUSHMESSAGE_COUNT_LAST_MESSAGE_EXPLAIN') }}</span></dt>
+			<dd>
+				<input type="number" name="pushmessage_count_last_message" id="pushmessage_count_last_message" size="4" maxlength="4" min="1" max="50" value="{{ PUSHMESSAGE_COUNT_LAST_MESSAGE }}" />
+			</dd>
+		</dl>
+		{% if S_PUSHMESSAGE_ENABLE_MCHAT %}
+		<dl>
+			<dt><label for="pushmessage_mention_mchat">{{ lang('ACP_PUSHMESSAGE_MENTION_MCHAT') }}{{ lang('COLON') }}</label><br>
+			<span>{{ lang('ACP_PUSHMESSAGE_MENTION_MCHAT_EXPLAIN') }}</span></dt>
+			<dd>
+				<label><input type="radio" class="radio" name="pushmessage_mention_mchat" value="1"{% if PUSHMESSAGE_MENTION_MCHAT %} id="pushmessage_mention_mchat" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="pushmessage_mention_mchat" value="0"{% if not PUSHMESSAGE_MENTION_MCHAT %} id="pushmessage_mention_mchat" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+		{% endif %}
 		<p class="submit-buttons">
 			<input class="pushmessage-button" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
 			{{ S_FORM_TOKEN }}

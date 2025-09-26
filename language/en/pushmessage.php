@@ -43,4 +43,15 @@ $lang = array_merge($lang, [
 	'PUSHMESSAGE_SUBMIT' 					=> 'Submit',
 	'PUSHMESSAGE_SELECT_USER' 				=> 'Select User',
 	'PUSHMESSAGE_CANNOT_SEND_TO_SELF' 		=> 'Cannot send message to yourself.',
+	'PUSHMESSAGE_SENT_MESSAGES' 			=> 'sent',
+	'PUSHMESSAGE_RECEIVED_MESSAGES' 		=> 'received',
+	'PUSHMESSAGE_NO_RECEIVED_MESSAGES' 		=> 'No messages received yet.',
+	'PUSHMESSAGE_NO_SENT_MESSAGES' 			=> 'No messages sent yet.',
+	'PUSHMESSAGE_TO' 						=> 'To member',
+	'PUSHMESSAGE_FROM' 						=> 'From member',
+	'PUSHMESSAGE_DATE' 						=> 'Date and Time',
+	'PUSHMESSAGE_COUNT_LAST_MESSAGE'		=>	[
+		1 => 'Last message',
+		2 => 'Last %s messages',
+	],
 ]);

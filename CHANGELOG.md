@@ -1,5 +1,14 @@
 ## Push Message Changelog
 
+### 1.0.4 - 2025-05-28
+
+- Add code to show sent/received messages on push message page, ACP included.
+
+### 1.0.3 - 2025-03-07
+
+- Code update for mChat @ integration.
+
+
 ### 1.0.2 - 2025-02-22
 
 - Code update generate_text_for_storage for message.

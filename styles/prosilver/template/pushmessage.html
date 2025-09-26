@@ -28,8 +28,62 @@
 	{{ S_FORM_TOKEN }}
 	<input type="hidden" id="current_user_id" value="{{ USER_ID }}" />
 </form>
+{% if PUSHMESSAGE_ENABLE_LAST_MESSAGE %}
+<br>
+<div class="pushmessage-form">
+	<fieldset>
+		<legend>
+			<i class="fa fa-paper-plane" aria-hidden="true" style="color:#4aa3df;"></i>
+			{{ PUSHMESSAGE_COUNT_LAST_MESSAGE }} {{ lang('PUSHMESSAGE_SENT_MESSAGES') }}
+		</legend>
+		<ul class="pushmessage-messages-list">
+		{% for message in SENT_MESSAGES %}
+			<li>
+				<span class="pushmessage-message-label">{{ lang('PUSHMESSAGE_TO') }}{{ lang('COLON') }}</span>
+				{{ message.receiver_username_string|raw }}<br>
+				<span class="pushmessage-message-label">{{ lang('PUSHMESSAGE_MESSAGE') }}{{ lang('COLON') }}</span>
+				<span class="pushmessage-message-content">{{ message.pushmessage_comment|raw }}</span><br>
+				<span class="pushmessage-message-date">
+					{{ lang('PUSHMESSAGE_DATE') }}{{ lang('COLON') }} {{ message.pushmessage_date|date("d-m-Y H:i") }}
+				</span>
+			</li>
+		{% else %}
+			<li>{{ lang('PUSHMESSAGE_NO_SENT_MESSAGES') }}</li>
+		{% endfor %}
+		</ul>
+	</fieldset>
+</div>
+<br>
+<div class="pushmessage-form">
+	<fieldset>
+		<legend>
+			<i class="fa fa-inbox" aria-hidden="true" style="color:#4aa3df;"></i>
+			{{ PUSHMESSAGE_COUNT_LAST_MESSAGE }} {{ lang('PUSHMESSAGE_RECEIVED_MESSAGES') }}
+		</legend>
+		<ul class="pushmessage-messages-list">
+		{% for message in RECEIVED_MESSAGES %}
+			<li>
+				<span class="pushmessage-message-label">{{ lang('PUSHMESSAGE_FROM') }}{{ lang('COLON') }}</span>
+				{{ message.sender_username_string|raw }}<br>
+				<span class="pushmessage-message-label">{{ lang('PUSHMESSAGE_MESSAGE') }}{{ lang('COLON') }}</span>
+				<span class="pushmessage-message-content">{{ message.pushmessage_comment|raw }}</span><br>
+				<span class="pushmessage-message-date">
+					{{ lang('PUSHMESSAGE_DATE') }}{{ lang('COLON') }} {{ message.pushmessage_date|date("d-m-Y H:i") }}
+				</span>
+			</li>
+		{% else %}
+			<li>{{ lang('PUSHMESSAGE_NO_RECEIVED_MESSAGES') }}</li>
+		{% endfor %}
+		</ul>
+	</fieldset>
+</div>
+{% endif %}
 
-{% if not S_PUSHMESSAGE_POPUP %}{% include 'overall_footer.html' %}{% else %}{% include 'simple_footer.html' %}{% endif %}
+{% if not S_PUSHMESSAGE_POPUP %}
+	{% include 'overall_footer.html' %}
+{% else %}
+	{% include 'simple_footer.html' %}
+{% endif %}
 {% endif %}
 
 <script>

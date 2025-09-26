@@ -3,8 +3,8 @@
 	"type": "phpbb-extension",
 	"description": "Push Message, message short messages.",
 	"homepage": "https://www.dmzx-web.net/",
-	"version": "1.0.2",
-	"time": "2025-02-22",
+	"version": "1.0.4",
+	"time": "2025-05-28",
 	"keywords": [
 		"phpbb",
 		"extension",

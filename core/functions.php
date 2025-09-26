@@ -26,7 +26,7 @@ class functions
 	protected $config;
 
 	/**
-	* Constructor
+		* Constructor
 	*
 	* @param template			$template
 	* @param manager 			$extension_manager
